@@ -69,7 +69,7 @@
         </tbody>
       </table>
       <div v-if="error" class="alert alert-danger" role="alert">
-        Network Error. Please try again!
+        {{ errorDescription }}
       </div>
     </div>
   </div>
@@ -89,6 +89,7 @@ export default {
       students: [],
       search: "",
       error: false,
+      errorDescription: "",
     };
   },
 
@@ -135,6 +136,7 @@ export default {
           this.loadData();
         }
       } catch (err) {
+        this.errorDescription = err.message;
         this.error = true;
       }
     },
