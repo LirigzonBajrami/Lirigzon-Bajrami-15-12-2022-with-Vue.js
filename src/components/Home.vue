@@ -68,6 +68,9 @@
           </tr>
         </tbody>
       </table>
+      <div v-if="error" class="alert alert-danger" role="alert">
+        Network Error. Please try again!
+      </div>
     </div>
   </div>
 </template>
@@ -85,6 +88,7 @@ export default {
     return {
       students: [],
       search: "",
+      error: false,
     };
   },
 
@@ -121,13 +125,17 @@ export default {
     },
 
     async deleteStudent(id) {
-      const response = await axios.delete(
-        `http://localhost:3000/students/${id}`
-      );
+      try {
+        const response = await axios.delete(
+          `http://localhost:3000/students/${id}`
+        );
 
-      if (response.status === 200) {
-        // reload page
-        this.loadData();
+        if (response.status === 200) {
+          // reload page
+          this.loadData();
+        }
+      } catch (err) {
+        this.error = true;
       }
     },
     async loadData() {
@@ -220,5 +228,9 @@ table tr {
   font-weight: 500;
   padding: 3px 10px;
   border-radius: 5px;
+}
+
+.alert-danger {
+  margin-top: 5px;
 }
 </style>
